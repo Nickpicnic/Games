@@ -2,13 +2,32 @@ class Monster extends Creature {
     constructor(y, x) {
         super(y, x);
         this.face = 'MF';
+        
+        this.tempX;
+        this.tempY;
+    }
+    can_move_to(newx,newy) {
+        // if (game.map[this.y][this.x] == ':') return false;
+        if (newx<0) return false;
+        if (newx>=game.map[0].length) return false;
+        if (newy<0) return false;
+        if (newy>=game.map.length) return false;
+        if (game.map[newy][newx].match(/^[BU:]$/)) {
+            return false;
+        } 
+        return true;
     }
     can_fall() {
         if (this.y>=game.map.length-1) return false;
-
+        for (let i = 0; i < game.objects.length; i++) {
+            if (game.objects[i].y==this.y+1 && game.objects[i].x==this.x) {
+             return false;
+            }
+        }
         if (
-            !game.map[this.y][this.x].match(/^[#_,./|0:]$/) && // Мы не на лестнице и не на веревке
-            !game.map[this.y+1][this.x].match(/^[BU#]$/)  // Под нами нет блока или лестницы
+            (!game.map[this.y][this.x].match(/^[#_,./|0:]$/) && // Мы не на лестнице и не на веревке
+            !game.map[this.y+1][this.x].match(/^[BU#]$/)) ||  // Под нами нет блока или лестницы
+            (this.x==game.player.x && this.y+1==game.player.y)
         ) return true;
         return false;
     }
@@ -31,17 +50,113 @@ class Monster extends Creature {
                 this.face = "MRL";
             }
         }
+    }    
+    move() {
+        if (this.can_fall()) {
+            this.small_move(0,1);
+            this.directionX=0, this.directionY=0;
+            return;
+        }
+        if (
+            !this.smallX &&
+            this.directionY && this.can_move_to(this.x,this.y+this.directionY) &&
+            (game.map[this.y][this.x]=="#" || (game.map[this.y][this.x]=="_" && this.directionY==1) ||
+            ((game.map[this.y+1][this.x]=="#") && (this.directionY >= 0)))
+            ) {
+            this.small_move(0,this.directionY);
+            return;
+        }
+        if (
+            this.smallY
+        ) {
+            this.small_move(0, this.smallY/Math.abs(this.smallY));
+        }
+
+        if (this.directionX && this.can_move_to(this.x+this.directionX,this.y)) {
+            this.small_move(this.directionX,0);
+            return;
+        }
+        if (this.directionY && this.smallX) {
+            this.smallX = 0;
+        }
     }
     tick(){
-        if (this.x==game.mainPlayer.x && this.y==game.mainPlayer.y) game.mainPlayer.alive = false;
-        let tempX, tempY;
-        tempX = game.mainPlayer.x - this.x;
-        this.directionX = tempX/Math.abs(tempX);
-        if (this.y != game.mainPlayer.y && game.map[this.y][this.x] == '#') {
-            tempY = game.mainPlayer.y - this.y;
-            this.directionY = tempY/Math.abs(tempY);
-        } else {
-            this.directionY = 0;
+        if (game.map[this.y][this.x].match(/^[BU]$/)) this.y=this.y-1;
+
+        if (!game.player) return;
+        if (this.x==game.player.x && this.y==game.player.y) {
+            game.monsterSound.play();
+            game.player.alive = false;              // if catch player
+        }
+        if ((this.x==game.player.x && this.y==game.player.y-1) &&
+             (game.map[this.y][this.x] != '_')) {
+            this.y++;
+        }
+
+        this.pldX = game.player.x - this.x;
+        if (this.pldX) this.pldX = this.pldX/Math.abs(this.pldX);
+
+        if (Math.hypot((this.x - game.player.x),(this.y - game.player.y)) < 5) {
+            game.runningSound.play();
+        }
+
+        this.pldY = game.player.y - this.y;
+        if (this.pldY) this.pldY=this.pldY/Math.abs(this.pldY);
+
+        if (this.smallX || this.smallY) {
+            return;
+        
+        } else if (!this.directionX && !this.directionY) {                  // if stay
+            this.directionX = this.pldX;                                    // move to player
+
+        } 
+        
+        else if (this.directionX && 
+                    (game.map[this.y][this.x]=='#' ||                       // move X and found stairs
+                     game.map[this.y-1][this.x]=='#')) {                      // and there is stairs to the player
+                        this.directionX=0;
+                        if (this.pldY) {
+                            this.directionY=this.pldY;
+                        } else {
+                            this.directionY=-1;                                 // go UPstairs
+                        }
+
+        } else if (this.directionX &&                                       // if move away from the player
+                    (game.map[this.y][this.x]=='#' ||                        // and found stairs
+                    game.map[this.y+1][this.x]=='#')) {                      // and can go DOWNstairs
+                        this.directionX=0;
+                        this.directionY=1;                                  // go DOWNstairs
+
+        } else if (this.directionX &&                                       // if move away from the player
+                    game.map[this.y][this.x]=='#' &&                        // and found stairs
+                    game.map[this.y-1][this.x]=='#') {                      // and can go UPstais
+                        this.directionX=0;
+                        if (this.pldY) {
+                            this.directionY=this.pldY;
+                        } else {
+                            this.directionY=-1;                                 // go UPstairs
+                        }
+
+        } else if (this.directionX &&
+                  !this.can_move_to(this.x+this.directionX, this.y)) {      // go X and met the barrier
+                        this.directionX=-this.directionX;
+
+        } else if (this.directionY &&                                       // go Y
+                    this.can_move_to(this.x+this.pldX,this.y) &&            // and can go to the player
+                    ((!this.can_move_to(this.x+this.pldX,this.y+1)) ||      // and there is a ground to step on it
+                    (game.map[this.y][this.x+this.pldX]=="_") )) {          // or there is a rope
+                        this.directionX=this.pldX;
+                        this.directionY=0;                                  // go there
+
+        } else if (this.directionY &&                                       // go Y
+                  !this.can_move_to(this.x,this.y+this.directionY) &&       // met the barrier
+                  this.can_move_to(this.x+this.pldX,this.y)) {              // can jump off to the player
+                    this.directionX=this.pldX;                              // jump off
+                    this.directionY=0;
+                    
+        } else if (this.directionY &&                                       // go Y
+                  !this.can_move_to(this.x,this.y+this.directionY)) {       // met the barrier        
+                    this.directionY=-this.directionY;
         }
     }
 }

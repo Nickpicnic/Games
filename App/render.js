@@ -25,15 +25,18 @@ let tile;
 let tileSize = ((w / 40));
 
 let animate = function() {
-    if (!game.mainPlayer.alive) {
+    game.new_level();
+    if (!game.player.alive) {
         ctx.fillStyle = "black";
         ctx.fillRect(0,0,w,h);  
         ctx.font = "270px VT323";
         ctx.fillStyle = "#75ABF8";
         ctx.fillText('GAME OVER',w/5,h2);
+        ctx.font = "75px VT323";
+        ctx.fillStyle = `rgba(117,171,248,${Math.round(game.globalTimer / 100 % 1)})`;
+        ctx.fillText('press R to restart',w/3,h/1.5);
         return;
     }
-    game.globalTimer++;
     ctx.fillRect(0,0,w,h);    
 
     var player;
@@ -64,7 +67,8 @@ let animate = function() {
         for (let x = 0; x < game.map[y].length; x++){
             tile = mapTilesLegend[game.map[y][x]];
             ctx.drawImage(TILESET,                                          // from this PNG
-                ...tile,                                                    // look into symbols map and return it's coordinates from TILES LEGEND
+                tile[0],tile[1] * game.level,
+                128,128,                                                  // look into symbols map and return it's coordinates from TILES LEGEND
                 tileSize*x - cameraX, tileSize*y - cameraY,                                     // set SCREEN POSITION of the block 
                 tileSize, tileSize                                          // set SIZE of each block 
             );
@@ -76,17 +80,17 @@ let animate = function() {
         if (object.tileno>=tile.length) object.tileno=0;
         tile=tile[object.tileno];
         ctx.drawImage(SPRITESET,
-            ...tile,
+            tile[0],tile[1],
+            128,128,
             tileSize*(object.x+object.smallX/SMALL) - cameraX, tileSize*(object.y+object.smallY/SMALL) - cameraY,
             tileSize, tileSize
         );
     }
     // SHOW SCORE
     ctx.fillRect(0,0.9*h,w,h);  
-    ctx.font = "100px VT323";
+    ctx.font = "90px VT323";
     ctx.fillStyle = "#75ABF8";
-    ctx.fillText(`LEVEL: ${game.level}`, 0.05*w, 0.98*h);
-    ctx.fillText(`YOUR SCORE: ${player.score}`, 0.65*w, 0.98*h);
+    ctx.fillText(`LEVEL: ${game.level} | TREASURE LEFT: ${game.totalMoney - player.score} | YOUR SCORE: ${player.score}`, 0.04*w, 0.98*h);
     ctx.fillStyle ='black';
 }
 
@@ -98,4 +102,5 @@ ctx.globalAlpha = 1;//0.05;
 ctx.lineWidth = 2;
 setInterval(() => {
         animate();
+        game.globalTimer++;
 }, 16 );

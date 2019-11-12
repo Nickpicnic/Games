@@ -7,15 +7,18 @@ class Player extends Creature {
         this.score = 0;
 
         this.destroyBlock = 0;        
-        // this.blockToDestroy = [];
     }
         can_fall() {
         if (this.y>=game.map.length-1) return false;
-
+        for (let i = 0; i < game.objects.length; i++) {
+           if (game.objects[i].y==this.y+1 && game.objects[i].x==this.x) {
+            return false;
+           }
+        } 
         if (
             !game.map[this.y][this.x].match(/^[#_]$/) && // Мы не на лестнице и не на веревке
-            !game.map[this.y+1][this.x].match(/^[BU#0|/,.]$/)  // Под нами нет блока или лестницы
-        ) return true;
+            !game.map[this.y+1][this.x].match(/^[BU#0|/,.]$/)   // Под нами нет блока или лестницы
+        )  return true;
         return false;
     }
     // ANIMATION    
@@ -42,11 +45,16 @@ class Player extends Creature {
     tick (){
         if (game.map[this.y][this.x] === '$'){
             game.map[this.y][this.x] = ' ';
+            game.takeTreasureSound.play();
             this.score++;
         }
         if (this.destroyBlock && game.map.length>this.y+1 && game.map[this.y+1][[this.x]]=="B") {
+            game.destroySound.play();
             game.destroyBlock(this.x,this.y+1);
         }
         game.removeBlock();
+        if (game.map[this.y][this.x].match(/^[BU]$/)) {
+            this.alive = false;
+        }
     }
 }
