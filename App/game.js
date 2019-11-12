@@ -6,7 +6,7 @@ class Game {
         this.totalMoney = 0;
     }
     loadParticularLevel(lvl) {
-        this.bgmusic=new Audio("music/hotline_miami_04.M.O.O.N-Crystals.mp3");
+//         this.bgmusic=new Audio("music/hotline_miami_04.M.O.O.N-Crystals.mp3");
         this.takeTreasureSound=new Audio("sounds/coin.ogg");
         this.destroySound=new Audio("sounds/413665__ironcross32__weapon.wav");
         this.monsterSound=new Audio("sounds/163439__under7dude__zombie-2.wav");
@@ -111,10 +111,10 @@ game.loadParticularLevel(game.level);
 
 // KEYPRESS EVENTS
 document.onkeydown = function (key) {
-    if (!game.bgmusic_played) {
-        game.bgmusic_played=true;
-        game.bgmusic.play();
-    }
+//     if (!game.bgmusic_played) {
+//         game.bgmusic_played=true;
+//         game.bgmusic.play();
+//     }
     if (!game.player) return;
     switch (key.keyCode) {
         case 37:
