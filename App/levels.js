@@ -1,114 +1,280 @@
-const LEVELS = [
-    {
+const LEVELS = {
+    "start":{
         // MENU
         map:
-            'UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\n' +
-            'U                                     U\n' +
-            'U                                     U\n' +
-            'U                                     U\n' +
-            'U                                     U\n' +
-            'U                                     U\n' +
-            'U                                     U\n' +
-            'UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\n',
+            'UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U       UUUUUUUUUUUUUUUUUUUUUUUU       U\n' +
+            'U       U         MUUM         U       U\n' +
+            'U       U        #UUUU#        U       U\n' +
+            'U       U   M    #    #  M     U       U\n' +
+            'UUUUUUUUU #UUUU# #    # #UUUU# UUUUUUUUU\n' +
+            'U     MU  #    # #    # #    #  UM     U\n' +
+            'U     #U# #    # #    # #    # #U#     U\n' +
+            'UM   M# # # M  # #    # #   M# # #M    U\n' +
+            'UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\n',
 
-
-        texts: [
+        widgets: [
             {
-                'x': 0.56,
-                'y': 0.2,
-                'width': 50,
+		'type':'button',
+                'x': 0.4,
+                'y': 0.14,
+                'width': 0.3,
                 'height': 0.08,
                 'font': 'VT323',
-                'value': "CAMPAIGN"
+                'value': "CAMPAIGN",
+		'selected':1,
+		'onclick':'campaign'
             },
             {
-                'x': 0.58,
-                'y': 0.3,
-                'width': 50,
+		'type':'button',
+                'x': 0.4,
+                'y': 0.24,
+                'width': 0.3,
                 'height': 0.08,
                 'font': 'VT323',
-                'value': "LEVELS"
+                'value': "USER LEVELS"
             },
             {
-                'x': 0.535,
-                'y': 0.4,
-                'width': 50,
+		'type':'button',
+                'x': 0.4,
+                'y': 0.34,
+                'width': 0.3,
                 'height': 0.08,
                 'font': 'VT323',
                 'value': "HIGH SCORES"
             },
             {
-                'x': 0.53,
-                'y': 0.5,
-                'width': 50,
+		'type':'button',
+                'x': 0.4,
+                'y': 0.44,
+                'width': 0.3,
                 'height': 0.08,
                 'font': 'VT323',
-                'value': "CREATE LEVEL"
+                'value': "LEVEL EDITOR",
+		'onclick': "levelEditor"
             },
         ],
-        buttons: [
-            {
-                'x': 0.5,
+    },
+	"gameover":{
+        map:
+            'UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\n',
+		widgets:[
+			{
+		'type':'text',
+                'x': 0.4,
                 'y': 0.14,
-                'width': 0.27,
+                'width': 0.3,
                 'height': 0.08,
+                'font': 'VT323',
+                'value': "GAME OVER",
             },
             {
-                'x': 0.5,
+		'type':'button',
+                'x': 0.4,
                 'y': 0.24,
-                'width': 0.27,
+                'width': 0.3,
                 'height': 0.08,
+                'font': 'VT323',
+                'value': "RESTART",
+		'onclick':'restart',
+		'selected':1
             },
             {
-                'x': 0.5,
+		'type':'button',
+                'x': 0.4,
                 'y': 0.34,
-                'width': 0.27,
+                'width': 0.3,
                 'height': 0.08,
-            },
-            {
-                'x': 0.5,
-                'y': 0.44,
-                'width': 0.27,
-                'height': 0.08,
-            },
-        ],
-        borders: [
-            {
-                'x1': 0.5,
-                'y1': 0.16,
-                'x2': 0.5,
-                'y2': 0.14,
-                'x3': 0.512,
-                'y3': 0.14
-            },
-            {
-                'x1': 0.5,
-                'y1': 0.202,
-                'x2': 0.5,
-                'y2': 0.222,
-                'x3': 0.512,
-                'y3': 0.222
-            },
-            {
-                'x1': 0.77,
-                'y1': 0.16,
-                'x2': 0.77,
-                'y2': 0.14,
-                'x3': 0.758,
-                'y3': 0.14
-            },
-            {
-                'x1': 0.77,
-                'y1': 0.202,
-                'x2': 0.77,
-                'y2': 0.222,
-                'x3': 0.758,
-                'y3': 0.222
+                'font': 'VT323',
+                'value': "BACK TO MENU",
+		'selected':0,
+		'onclick':'menu'
             },
 
-        ]
-    },
-    {   // LEVEL 1
+		]
+	},
+	"levelEditor":{
+	map:
+	    'UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\n' +
+	    'U                                       \n' +
+	    'U                                       \n' +
+	    'U                                       \n' +
+	    'U                                       \n' +
+            'U                                       \n' +
+            'U                                       \n' +
+            'U                                       \n' +
+            'U                                       \n' +
+            'U                                       \n' +
+            'U                                       \n' +
+            'U                                       \n' +
+            'U                                       \n' +
+            'U                                       \n' +
+            'U                                       \n' +
+            'U                                       \n' +
+            'U                                       \n' +
+            'U                                       \n' +
+            'U                                       \n' +
+            'U                                       \n' +
+            'U                                       \n' +
+            'U                                       \n' +
+            'U                                       \n',
+		widgets:[
+			{
+		'type':'text',
+                'x': 0.2,
+                'y': 0.62,
+                'width': 0.3,
+                'height': 0.06,
+                'font': 'VT323',
+                'value': "INSTRUCTIONS:",
+            		},
+			{
+		'type':'text',
+                'x': 0.2,
+                'y': 0.7,
+                'width': 0.3,
+                'height': 0.04,
+                'font': 'VT323',
+                'value': "1. For Solid Block Press  '1'",
+            		},
+			{
+		'type':'text',
+                'x': 0.2,
+                'y': 0.74,
+                'width': 0.3,
+                'height': 0.04,
+                'font': 'VT323',
+                'value': "2. For Brick Block Press  '2'",
+            		},
+			{
+		'type':'text',
+                'x': 0.2,
+                'y': 0.78,
+                'width': 0.3,
+                'height': 0.04,
+                'font': 'VT323',
+                'value': "3. For Stairs Block Press '3'",
+            		},
+			{
+		'type':'text',
+                'x': 0.2,
+                'y': 0.82,
+                'width': 0.3,
+                'height': 0.04,
+                'font': 'VT323',
+                'value': "4. For Golden Block Press '4'",
+            		},
+			{
+		'type':'text',
+                'x': 0.6,
+                'y': 0.7,
+                'width': 0.3,
+                'height': 0.04,
+                'font': 'VT323',
+                'value': "5. For Rope Block Press  '5'",
+            		},
+			{
+		'type':'text',
+                'x': 0.6,
+                'y': 0.74,
+                'width': 0.3,
+                'height': 0.04,
+                'font': 'VT323',
+                'value': "6. For Empty Block Press '0'",
+            		},
+			{
+		'type':'text',
+                'x': 0.6,
+                'y': 0.78,
+                'width': 0.3,
+                'height': 0.04,
+                'font': 'VT323',
+                'value': "7. For Monster Press 'M'",
+            		},
+			{
+		'type':'text',
+                'x': 0.6,
+                'y': 0.82,
+                'width': 0.3,
+                'height': 0.04,
+                'font': 'VT323',
+                'value': "8. For Hero Press    'H'",
+            		},
+			{
+		'type':'text',
+                'x': 0.2,
+                'y': 0.88,
+                'width': 0.3,
+                'height': 0.04,
+                'font': 'VT323',
+                'value': "9. To Set Chosen Block To The Canvas Press 'SPACE'",
+            		},
+		]
+	},
+	'campaignPreview': {
+		map:             
+	    'UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'U                                      U\n' +
+            'UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\n',
+		/*widgets: [
+			,	
+		],*/
+		generator:"campaign"
+	},
+    "level1":{   // LEVEL 1
         map:
             "UUUUUUU                           UUUUUU\n" +   // 0
             "UUU                                  UUU\n" +   // 0
@@ -123,8 +289,8 @@ const LEVELS = [
             "U# UUUUUU     H   #UBBBBBU#   #   $   #U\n" +   // 9
             "U#      # $       #UBBBBBU#$  # #BBB# #U\n" +   // 10
             "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU",      // 29
-    },
-    {   // LEVEL 2
+	},
+    "level2":{   // LEVEL 2
         map:
             "UUUUUUU                           UUUUUU\n" +   // 0
             "UUU                                  UUU\n" +   // 0
@@ -140,7 +306,7 @@ const LEVELS = [
             "U#      # $       #UBBBBBU#   # #BBB# #U\n" +   // 10
             "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU",      // 29
     },
-    {   // LEVEL 3
+    "level3":{   // LEVEL 3
         map:
             "UUUUUUU                           UUUUUUUUUUUU                            UUUUUUUUUUUU                           UUUUUUU\n" +   // 0
             "UUUU                                UUUUUUUU                                UUUUUUUU                               UUUUU\n" +   // 0
@@ -156,7 +322,7 @@ const LEVELS = [
             "U#     B#         #UBBBBBU#   # #BBB# #UU#     B#  #B#  $BBB#         # #BBB# #UU#     B#BBBBBBBBBBBBBBBBBBBBB#  BBB  #U\n" +   // 10
             "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU",      // 29
     },
-    {   // LEVEL 4
+    "level4":{   // LEVEL 4
         map:
             "UUUUUUUUUUUU                 UUUUUUUUUUUUUUUUUUUUUU                  UUUUUUUUUUUUUUUUUUUUUU                UUUUUUUUUUUUU\n" +   // 0
             "UUUUUUU                           UUUUUUUUUUUU                            UUUUUUUUUUUU                           UUUUUUU\n" +   // 0
@@ -190,7 +356,7 @@ const LEVELS = [
             "UBBB#   #      B#             #     #BBUUBB#    #      B#             #     #BBUUBB#    #      B#          M  #     #BBU\n" +   // 28
             "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU",      // 29
     },
-    {   // LEVEL 5
+    "level5":{   // LEVEL 5
         map:
             "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU                                                                                                              UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\n" +
             "U       M        $B_____                         UU                                                                                                            UU                         _____B$        M       U\n" +
@@ -236,4 +402,4 @@ const LEVELS = [
             "                                                                                                 UUUUUUUUUUUUUUUU                                                                                                 \n",
     }
 
-];
+};
