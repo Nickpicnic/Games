@@ -11,11 +11,12 @@ class Creature {
         this.smallX=0;
         this.smallY=0;
 
+
         this.tileno = 0;
     }
 
     tick() {
-        
+
     }
     can_fall() {
         if (this.y>=game.map.length-1) return false;
@@ -59,11 +60,8 @@ class Creature {
         return true;
     }
     move() {
-        //console.log(this.smallX, this.smallY);
-        //if (this.smallX||this.smallY) this.continue_small_move
         if (this.can_fall()) {
             this.small_move(0,1);
-            //this.y++;
             return;
         }
         if (
@@ -73,10 +71,8 @@ class Creature {
             ((game.map[this.y+1][this.x]=="#") && (this.directionY >= 0)))
             ) {
             this.small_move(0,this.directionY);
-            //this.y+=this.directionY;
             return;
         }
-
         if (
             this.smallY
         ) {
@@ -85,8 +81,10 @@ class Creature {
 
         if (this.directionX && this.can_move_to(this.x+this.directionX,this.y)) {
             this.small_move(this.directionX,0);
-            //this.x+=this.directionX;
             return;
+        }
+        if (this.directionY && this.smallX) {
+            this.smallX = 0;
         }
     }
 }
