@@ -1,5 +1,5 @@
 # SovietRunnerJS
---JS Games
+JS Games
 ![alt text](https://raw.githubusercontent.com/Nickpicnic/LodeRunnerJS/master/screenshots/0.png)
 
 A simple 2D browser game. 
