@@ -10,3 +10,5 @@ The rules are pretty simple:
     map. Get there to reach the next level.
     
   - You can also create your own levels, modify the existing ones or even create new campaigns from levels that you like. 
+![alt text](https://raw.githubusercontent.com/Nickpicnic/LodeRunnerJS/master/screenshots/1.png)
+![alt text](https://raw.githubusercontent.com/Nickpicnic/LodeRunnerJS/master/screenshots/2.png)
